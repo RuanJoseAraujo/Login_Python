@@ -6,6 +6,7 @@ cursor = banco.cursor()
 
 # cursor.execute("CREATE TABLE users (id integer, name text, birthdate text, email text)")
 
-cursor.execute("select * from users")
+def showUsers():
+    cursor.execute("select * from users")
+    print(cursor.fetchall())
 
-print(cursor.fetchall())
