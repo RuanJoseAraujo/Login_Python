@@ -85,15 +85,24 @@ def registerUser():
     getName()
     getBirthDate()
     getEmail()
-    print('-=' * 20)
-    print(f'Dados:\nNome: {name}\nData de nascimento: {day}/{month}/{year}\nE-mail: {email}')
-    print('-=' * 20)
-    try:
-        answer = str(input('Deseja inserir esses dados? [S/N]: '))
-        if answer[0] in 'Nn':
-            print('Qual elemento você deseja editar?\n1 - Nome\n2 - Dia\n3 - Mês\n4 - Ano\n5 - E-mail\n6 - Nenhum')
-    except:
-        print('testando')
+    while True:
+        try:
+            print('-=' * 20)
+            print(f'Dados:\nNome: {name}\nData de nascimento: {day}/{month}/{year}\nE-mail: {email}')
+            print('-=' * 20)
+            answer = str(input('Deseja inserir esses dados? [S/N]: '))
+            if answer[0] in 'Nn':
+                editing = int(input('Qual elemento você deseja editar?\n1 - Nome\n2 - Data de nascimento\n3 - E-mail\n4 - Nenhum\nOpção: '))
+                if editing == 1:
+                    getName()
+                if editing == 2:
+                    getBirthDate()
+                if editing == 3:
+                    getEmail()
+            else:
+                break        
+        except:
+            print('testando')
 
 
 
