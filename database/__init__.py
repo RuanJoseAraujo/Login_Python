@@ -1,14 +1,16 @@
 import sqlite3 
-
+from time import sleep
 banco = sqlite3.connect('login.db')
 
 cursor = banco.cursor()
 
-# cursor.execute("CREATE TABLE users (id integer, name text, birthdate text, email text)")
+#cursor.execute("CREATE TABLE users (id integer primary key, name text, birthdate text, email text)")
 
 def showUsers():
-    cursor.execute("select * from users")
-    print(cursor.fetchall())
+    print('-=' * 20)
+    for c in (cursor.execute("select * from users")):
+        print(c,end='\n')
+    print('-=' * 20)
 
 def registerUser():
     
@@ -40,14 +42,14 @@ def registerUser():
             print('Erro! Digite a data corretamente.')
 
         try:
-            thirtyOne = [4, 6, 9, 11]
+            thirty = [4, 6, 9, 11]
             while True:
                 month = int(input("Mês: "))
                 if month > 12 or month < 1:
                     print("Digite o mês corretamente")
                 if day > 28 and month == 2:
                     print('Erro! Esse mês não possui mais de 28 dias')
-                elif month in thirtyOne:
+                elif day == 31 and month in thirty:
                     print('Erro! Esse mês não possui 31 dias')
                 else:
                     break                       
@@ -55,12 +57,14 @@ def registerUser():
             print('Erro! Digite o mês corretamente')
             
         try:
+            global birthDate
             while True:
                 year = int(input("Ano: "))
                 year = str(year)
-                if len(year) > 4 or len(year) < 3:
+                if len(year) != 4:
                     print("Digite o ano corretamente.") 
                 else:
+                    birthDate = (f'{year}-{month}-{day}')
                     break
         except:
             print('Erro! Digite o ano corretamente.') 
@@ -85,6 +89,7 @@ def registerUser():
     getName()
     getBirthDate()
     getEmail()
+    
     while True:
         try:
             print('-=' * 20)
@@ -95,18 +100,27 @@ def registerUser():
                 editing = int(input('Qual elemento você deseja editar?\n1 - Nome\n2 - Data de nascimento\n3 - E-mail\n4 - Nenhum\nOpção: '))
                 if editing == 1:
                     getName()
-                if editing == 2:
+                elif editing == 2:
                     getBirthDate()
-                if editing == 3:
+                elif editing == 3:
                     getEmail()
-            else:
-                break        
-        except:
-            print('testando')
+                elif answer[0] == 4:
+                    break 
+            elif answer[0] in 'Ss':
+                cursor.execute("INSERT INTO users (id ,name, birthdate, email) VALUES ( NULL, '"+name+"', '"+birthDate+"', '"+email+"')")
+                banco.commit()
+                for c in range(0,3):
+                    print('.',end=' ', flush=True)
+                    sleep(.5)
+                print('Cadastro realizado!')
+                break       
+        except Exception as error:
+            print(error.__cause__)
+            print(error.__class__)
 
 
 
 
 
 
-registerUser()
+
