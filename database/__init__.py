@@ -37,39 +37,48 @@ def getBirthDate():
         try:
             print('Digite sua data de nascimento: ')
             while True:
-                day = int(input("Dia: "))
-                if day >= 32 or day <= 0:
-                    print("Digite o dia corretamente.")
-                else:
-                    break
+                try:
+                    day = int(input("Dia: "))
+                    if day >= 32 or day <= 0:
+                        print("Digite o dia corretamente.")
+                    else:
+                        break
+                except:
+                    print('Erro! Digite o dia corretamente.')
         except:
-            print('Erro! Digite a data corretamente.')
+            print('Erro! Digite o dia corretamente.')
 
         try:
             thirty = [4, 6, 9, 11]
             while True:
-                month = int(input("Mês: "))
-                if month > 12 or month < 1:
-                    print("Digite o mês corretamente")
-                elif day > 28 and month == 2:
-                    print('Erro! Esse mês não possui mais de 28 dias')
-                elif day == 31 and month in thirty:
-                    print('Erro! Esse mês não possui 31 dias')
-                else:
-                    break                       
+                try:
+                    month = int(input("Mês: "))
+                    if month > 12 or month < 1:
+                        print("Digite o mês corretamente")
+                    elif day > 28 and month == 2:
+                        print('Erro! Esse mês não possui mais de 28 dias')
+                    elif day == 31 and month in thirty:
+                        print('Erro! Esse mês não possui 31 dias')
+                    else:
+                        break           
+                except:
+                    print('Erro! Digite o mês corretamente')            
         except:
             print('Erro! Digite o mês corretamente')
             
         try:
             global birthDate
             while True:
-                year = int(input("Ano: "))
-                year = str(year)
-                if len(year) != 4:
-                    print("Digite o ano corretamente.") 
-                else:
-                    birthDate = (f'{year}-{month}-{day}')
-                    break
+                try:
+                    year = int(input("Ano: "))
+                    year = str(year)
+                    if len(year) != 4:
+                        print("Digite o ano corretamente.") 
+                    else:
+                        birthDate = (f'{year}-{month}-{day}')
+                        break
+                except:
+                    print('Erro! Digite o ano corretamente.')
         except:
             print('Erro! Digite o ano corretamente.') 
 
