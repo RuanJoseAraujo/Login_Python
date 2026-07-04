@@ -12,9 +12,7 @@ def showUsers():
         print(c,end='\n')
     print('-=' * 20)
 
-def registerUser():
-    
-    def getName():
+def getName():
         global name
         try:
             while True:
@@ -28,7 +26,8 @@ def registerUser():
                     break
         except (KeyboardInterrupt):
             print('Erro! Não foi passado nenhum valor')
-    def getBirthDate():
+
+def getBirthDate():
         global day, month, year
         try:
             print('Digite sua data de nascimento: ')
@@ -47,7 +46,7 @@ def registerUser():
                 month = int(input("Mês: "))
                 if month > 12 or month < 1:
                     print("Digite o mês corretamente")
-                if day > 28 and month == 2:
+                elif day > 28 and month == 2:
                     print('Erro! Esse mês não possui mais de 28 dias')
                 elif day == 31 and month in thirty:
                     print('Erro! Esse mês não possui 31 dias')
@@ -68,7 +67,8 @@ def registerUser():
                     break
         except:
             print('Erro! Digite o ano corretamente.') 
-    def getEmail():
+
+def getEmail():
         global email
         try:
             while True:
@@ -85,11 +85,13 @@ def registerUser():
                     print('Erro! Digite um email válido')
         except:
             print('Erro! Digite um e-mail válido')
+
+def registerUser():
     
     getName()
     getBirthDate()
     getEmail()
-    
+
     while True:
         try:
             print('-=' * 20)
@@ -117,6 +119,36 @@ def registerUser():
         except Exception as error:
             print(error.__cause__)
             print(error.__class__)
+
+def editUser():
+    try:
+        showUsers()
+        edit = int(input("Qual registro você deseja editar? "))
+        validation = cursor.execute("SELECT * FROM users WHERE id = "+str(edit)+"")
+        if len(validation.fetchall()) == 1:
+            show = cursor.execute("SELECT * FROM users WHERE id = "+str(edit)+"")
+            print(show.fetchall())
+            try:
+                makeSure = str(input('Deseja editar esse registro? [S/N] ')).upper().strip()
+                if makeSure[0] in 'S':
+                    getName()
+                    getBirthDate()
+                    getEmail() 
+                    print('-=' * 20)
+                    print(f'Dados:\nNome: {name}\nData de nascimento: {day}/{month}/{year}\nE-mail: {email}')
+                    print('-=' * 20)
+                    makeSure = str(input('Deseja realizar esse registro? [S/N] ')).upper().strip()
+                    if makeSure[0] in 'S':
+                        cursor.execute("UPDATE users SET name = '"+str(name)+"', birthdate = '"+str(birthDate)+"', email = '"+str(email)+"' WHERE id = "+str(edit)+"") 
+                        banco.commit()
+            except (KeyboardInterrupt):
+                print('Erro! Digite alguma opção')
+            except:
+                print('Erro! Opção inválida')    
+        else:
+            print('Erro! Opção inválida')
+    except Exception as error:
+        print(error.__class__)
 
 
 
