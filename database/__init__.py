@@ -1,10 +1,15 @@
 import sqlite3 
 from time import sleep
-banco = sqlite3.connect('login.db')
 
-cursor = banco.cursor()
 
-#cursor.execute("CREATE TABLE users (id integer primary key, name text, birthdate text, email text)")
+def createDataBase():
+    global cursor, banco
+    banco = sqlite3.connect('login.db')
+    cursor = banco.cursor()
+    try:
+        cursor.execute("CREATE TABLE users (id integer primary key, name text, birthdate text, email text)")
+    except:
+        return ''
 
 def showUsers():
     print('-=' * 20)
@@ -87,7 +92,7 @@ def getEmail():
             print('Erro! Digite um e-mail válido')
 
 def registerUser():
-    
+    print('-=' * 20)
     getName()
     getBirthDate()
     getEmail()
@@ -141,6 +146,10 @@ def editUser():
                     if makeSure[0] in 'S':
                         cursor.execute("UPDATE users SET name = '"+str(name)+"', birthdate = '"+str(birthDate)+"', email = '"+str(email)+"' WHERE id = "+str(edit)+"") 
                         banco.commit()
+                        for c in range(0,3):
+                            print('.',end=' ', flush=True)
+                            sleep(.5)
+                        print('Registro editado!')
             except (KeyboardInterrupt):
                 print('Erro! Digite alguma opção')
             except:
@@ -162,9 +171,11 @@ def deleteUser():
             if makeSuke[0] in 'S':
                 cursor.execute("DELETE FROM users WHERE id = "+str(answer)+"")
                 banco.commit()
-    except Exception as error:
-        print(error.__class__)
-
-
-
-
+                for c in range(0,3):
+                    print('.',end=' ', flush=True)
+                    sleep(.5)
+                print('Usuário deletado!')
+    except KeyboardInterrupt:
+        print('Erro! Nenhum valor inserido')
+    except:
+        print('Erro! Opção inválida')
