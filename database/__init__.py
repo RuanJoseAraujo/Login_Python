@@ -150,8 +150,20 @@ def editUser():
     except Exception as error:
         print(error.__class__)
 
-
-
+def deleteUser():
+    showUsers()
+    try:
+        answer = int(input('Qual registro você deseja deletar? '))
+        validation = cursor.execute("SELECT * FROM users WHERE id = "+str(answer)+"")
+        if len(validation.fetchall()) == 1:
+            show = cursor.execute("SELECT * FROM users WHERE id = "+str(answer)+"")
+            print(show.fetchall())
+            makeSuke = str(input('Deseja exluir esse registro? [S/N] ')).upper().strip()
+            if makeSuke[0] in 'S':
+                cursor.execute("DELETE FROM users WHERE id = "+str(answer)+"")
+                banco.commit()
+    except Exception as error:
+        print(error.__class__)
 
 
 
